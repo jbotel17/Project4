@@ -1,7 +1,9 @@
 <script setup>
-import { computed } from 'vue';
+import { defineProps, computed } from 'vue';
 
-defineProps(['recipe']);
+const props = defineProps({
+  recipe: Object,
+});
 
 const totalCost = computed(() => {
   return props.recipe.ingredients.reduce((sum, item) => sum + item.cost, 0);
@@ -13,10 +15,10 @@ const totalCalories = computed(() => {
 </script>
 
 <template>
-  <div>
-    <h3>RecipeDetails</h3>
+  <div v-if="props.recipe">
+    <h3>{{ props.recipe.name }} - RecipeDetails</h3>
     <ul>
-      <li v-for="item in recipe.ingredients" :key="item.name">
+      <li v-for="item in props.recipe.ingredients" :key="item.name">
         {{ item.name }} - ${{ item.cost }} - {{ item.calories }} cal
       </li>
     </ul>

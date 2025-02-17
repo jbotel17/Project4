@@ -1,16 +1,15 @@
 <script setup>
-import { ref } from 'vue';
-import RecipeDetails from './RecipeDetails.vue';
+import { defineProps, defineEmits } from 'vue';
 
-const recipes = ref([
-  { name: 'Pasta', ingredients: [{ name: 'Tomato Sauce', cost: 2, calories: 100 }, { name: 'Noodles', cost: 3, calories: 200 }] },
-  { name: 'Salad', ingredients: [{ name: 'Lettuce', cost: 1, calories: 10 }, { name: 'Dressing', cost: 2, calories: 50 }] }
-]);
+const props = defineProps({
+    recipes: Array,
+    selectedRecipe: Object,
+})
 
-const selectedRecipe = ref(null);
+const emit = defineEmits(['select-recipe']);
 
 const selectRecipe = (recipe) => {
-  selectedRecipe.value = recipe;
+  emit('select-recipe',recipe);
 };
 </script>
 
@@ -18,10 +17,13 @@ const selectRecipe = (recipe) => {
  <div>
     <h2>Recipe List</h2>
     <ul>
-      <li v-for="recipe in recipes" :key="recipe.name" @click="selectRecipe(recipe)">
+      <li 
+      v-for="recipe in recipes" 
+      :key="recipe.name" 
+      @click="selectRecipe(recipe)">
         {{ recipe.name }}
       </li>
     </ul>
-    <RecipeDetails v-if="selectedRecipe" :recipe="selectedRecipe" />
+    <RecipeDetails v-if="props.selectedRecipe" :recipe="props.selectedRecipe" />
  </div>
 </template>
